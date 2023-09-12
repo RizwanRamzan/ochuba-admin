@@ -1,10 +1,21 @@
 // import ApplcationRoutes from './Config/ApplicationRoutes'
 import HomeRoutes from './Routes/HomeRoutes'
 import Layout from './Component/Layout/Layout';
+import AuthRoutes from './Routes/AuthRoutes';
 
 function App() {
+
+  const token = localStorage.getItem("token")
+
   return (
-    <Layout><HomeRoutes /></Layout>
+    <>
+      {
+        token ?
+          <Layout>< HomeRoutes /></Layout >
+          :
+          <AuthRoutes />
+      }
+    </>
   )
 }
 

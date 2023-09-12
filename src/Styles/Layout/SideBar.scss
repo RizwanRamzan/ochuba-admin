@@ -28,150 +28,156 @@
   }
 
   .side-bar-content {
-    // height: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 30px;
+    justify-content: center;
 
+    .side-bar {
 
-    .side-bar-top-section {
       display: flex;
+      height: 90%;
       flex-direction: column;
-      align-items: center;
+      justify-content: space-between;
 
-      svg path {
-        cursor: pointer;
-        fill: #958070;
-      }
-
-      .side-bar-top-section-items {
-        margin-top: 36px;
+      .side-bar-top-section {
         display: flex;
         flex-direction: column;
-        row-gap: 15px;
+        align-items: center;
 
-        .side-bar-top-section-single-item {
+        svg path {
+          cursor: pointer;
+          fill: #958070;
+        }
+
+        .side-bar-top-section-items {
+          margin-top: 36px;
           display: flex;
-          align-items: center;
-          justify-content: center;
           flex-direction: column;
-          color: $thirdColor;
-          row-gap: 5px;
+          row-gap: 15px;
 
-          svg path{
-            fill: $dark;
-          }
-
-          &:hover {
-            color: $primaryColor;
+          .side-bar-top-section-single-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: $thirdColor;
+            row-gap: 5px;
 
             svg path {
-              cursor: pointer;
-              fill: $primaryColor;
+              fill: $dark;
             }
-          }
-
-          p {
-            font-family: $fontFamily;
-            font-weight: $fontNormal;
-            font-size: 12px;
-            text-align: center;
-            cursor: pointer;
-            margin: 0px;
-            color: $dark;
 
             &:hover {
               color: $primaryColor;
+
+              svg path {
+                cursor: pointer;
+                fill: $primaryColor;
+              }
             }
+
+            p {
+              font-family: $fontFamily;
+              font-weight: $fontNormal;
+              font-size: 12px;
+              text-align: center;
+              cursor: pointer;
+              margin: 0px;
+              color: $dark;
+
+              &:hover {
+                color: $primaryColor;
+              }
+            }
+
           }
 
-        }
+          .active-side-bar-top-section-single-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: $thirdColor;
+            row-gap: 5px;
+            border-right: 2px solid $primaryColor;
 
-        .active-side-bar-top-section-single-item {
+
+            p {
+              font-family: $fontFamily;
+              color: $primaryColor;
+              font-weight: $fontNormal;
+              font-size: 12px;
+              text-align: center;
+              cursor: pointer;
+              margin: 0px;
+            }
+
+            svg path {
+              fill: $primaryColor;
+            }
+
+          }
+        }
+      }
+
+      .side-bar-down-section {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 15px;
+
+        .notifaction-bell {
+          width: 39px;
+          height: 39px;
+          border-radius: 50%;
+          background-color: #f8f6f4;
+          // @include flex-center;
           display: flex;
           align-items: center;
           justify-content: center;
-          flex-direction: column;
-          color: $thirdColor;
-          row-gap: 5px;
-          border-right: 2px solid $primaryColor;
+          cursor: pointer;
+        }
 
+        .active-profile {
+          border: 3px solid $primaryColor;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
 
-          p {
-            font-family: $fontFamily;
-            color: $primaryColor;
-            font-weight: $fontNormal;
-            font-size: 12px;
-            text-align: center;
-            cursor: pointer;
-            margin: 0px;
-          }
+        }
+
+        .active-notification {
+          width: 39px;
+          height: 39px;
+          border-radius: 50%;
+          background-color: $primaryColor;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
 
           svg path {
-            fill: $primaryColor;
+            fill: white !important;
+            padding: 0%;
           }
 
         }
-      }
-    }
 
-    .side-bar-down-section {
-      margin-top: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      row-gap: 15px;
-
-      .notifaction-bell {
-        width: 39px;
-        height: 39px;
-        border-radius: 50%;
-        background-color: #f8f6f4;
-        // @include flex-center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
-
-      .active-profile {
-        border: 3px solid $primaryColor;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-
-      }
-
-      .active-notification{
-        width: 39px;
-        height: 39px;
-        border-radius: 50%;
-        background-color: $primaryColor;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        svg path{
-          fill: white !important;
-          padding: 0%;
-        }
-
-      }
-
-      .side-bar-profile {
-        min-width: 50px;
-        min-height: 50px;
-        max-width: 50px;
-        max-height: 50px;
-        border-radius: 50%;
-
-        img {
-          width: 50px;
-          height: 50px;
+        .side-bar-profile {
+          min-width: 50px;
+          min-height: 50px;
+          max-width: 50px;
+          max-height: 50px;
           border-radius: 50%;
+
+          img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+          }
         }
       }
     }
@@ -196,11 +202,11 @@
 }
 
 .suboption {
-  color: $dark !important ;
+  color: $dark !important;
   font-weight: $fontBold;
 }
 
-.suboption:hover{
+.suboption:hover {
   color: $primaryColor !important;
 }
 
