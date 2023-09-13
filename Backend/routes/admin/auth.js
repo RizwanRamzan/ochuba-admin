@@ -4,8 +4,7 @@ const {
   userSignup,
   userLogin,
   getAllUsers
-} = require("../controllers/auth.controllers");
-// const checkAuth = require("../middleware/check-auth");
+} = require("../../controllers/auth.controllers");
 
 router.post("/signup", userSignup);
 router.post("/login", userLogin);

@@ -5,18 +5,8 @@ const jsonwebtoken = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const ejs = require("ejs");
 
-function randomPassword() {
-  return (
-    Math.random().toString(36).slice(2) +
-    Math.random().toString(36).toUpperCase().slice(2)
-  );
-}
-
 exports.userSignup = async (req, res, next) => {
   try {
-    console.log(req.body);
-    req.body.password = randomPassword();
-    console.log(req.body.password);
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
@@ -24,6 +14,7 @@ exports.userSignup = async (req, res, next) => {
       ...req.body,
       password: hash,
     });
+
     const token = jsonwebtoken.sign(
       {
         data: [user.email, user._id],
@@ -31,53 +22,18 @@ exports.userSignup = async (req, res, next) => {
       },
       "" + process.env.JWT_SECRET
     );
+
     const result = await user.save();
+
     if (!result) {
       return next(new ErrorResponse("Signup failed", 400));
     }
-    ejs.renderFile(
-      __dirname + "/../views/email.ejs",
-      {
-        user: result,
-        password: req.body.body,
-        message: "User has been created successfully",
-        link: "www.google.com"
-      },
-      function (err, data) {
-        if (err) return err;
-        else {
-          const transporter = nodemailer.createTransport({
-            host: "smtp.office365.com", // Office 365 server
-            port: 587, // secure SMTP
-            secure: false, // false for TLS - as a boolean not string - but the default is false so just remove this completely
-            auth: {
-              user: "support@vipinfluencers.com",
-              pass: "Sm@rt77385",
-            },
-            tls: {
-              ciphers: "SSLv3",
-            },
-          });
-
-          // send mail with defined transport object
-          const mailOptions = {
-            from: '"Softcity" <support@vipinfluencers.com>', // sender address
-            to: result.email, // list of receivers
-            subject: `Your user has been registered`, // Subject line
-            html: data,
-          };
-
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              console.log("........error");
-              console.log(error);
-            } else {
-              console.log("Mail sent : %s", info.response);
-            }
-          });
-        }
-      }
-    );
+    return res.status(200).json({
+      success: true,
+      message: "Successfully Created the user",
+      token: token,
+      user: result
+    });
   } catch (err) {
     console.log(err);
     return next(new ErrorResponse(err, 400));
@@ -98,7 +54,7 @@ exports.userLogin = async (req, res, next) => {
         const token = jsonwebtoken.sign(
           {
             data: [result.email, result._id],
-            role: "user",
+            role: "admin",
           },
           "" + process.env.JWT_SECRET
         );
@@ -107,6 +63,7 @@ exports.userLogin = async (req, res, next) => {
           success: true,
           message: "Successfully Logged in",
           token: token,
+          user: result
         });
       } else {
         return next(new ErrorResponse("Incorrect password", 200));

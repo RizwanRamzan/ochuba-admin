@@ -22,20 +22,13 @@ const userSlice = createSlice({
       state.user = { email: "", password: "", role: "" };
       state.token = ''
     },
-    setBooking: (state, action) => {
-      state.booking = action.payload;
-    },
     setUserCompleteDetails: (state, action) => {
       state.userDetails = action.payload
     }
-
   },
-
 });
 
-
-
-export const { setUser, signout, setToken, setUserCompleteDetails,setBooking } = userSlice.actions;
+export const { setUser, signout, setToken, setUserCompleteDetails } = userSlice.actions;
 export const authReducer = userSlice.reducer;
 
 

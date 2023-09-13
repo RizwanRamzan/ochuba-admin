@@ -1,11 +1,7 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    firstName:{
-        type:String,
-        default:''
-    },
-    lastName:{
+    fullName:{
         type:String,
         default:''
     },
@@ -24,23 +20,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
-    country: {
-        type: String,
-        default: ''
+    admin: {
+        type: Boolean,
+        default: false
     },
-    company: {
-        type: String,
-        default: ''
-    },
-    role: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'AdminRoles',
-        default: ''
-    },
-    userGroup: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'UserGroup'
-    }],
     password: {
         type: String,
         required: [true, "Please provide password"]
