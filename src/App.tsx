@@ -1,11 +1,12 @@
 // import ApplcationRoutes from './Config/ApplicationRoutes'
 import HomeRoutes from './Routes/HomeRoutes'
 import Layout from './Component/Layout/Layout';
+import { useSelector } from "react-redux";
 import AuthRoutes from './Routes/AuthRoutes';
 
 function App() {
 
-  const token = localStorage.getItem("token")
+  const token = useSelector((state: any) => state.authReducer.token);
 
   return (
     <>

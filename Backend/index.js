@@ -13,6 +13,7 @@ const PORT = 5000
 
 // Available Routes
 app.use('/api/v1/auth', require('./routes/admin/auth'))
+app.use('/api/v1/admin/trading', require('./routes/admin/trading'))
 
 
 app.listen(PORT, () => {

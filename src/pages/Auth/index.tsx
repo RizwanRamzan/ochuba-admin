@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Col, Form, Input, Row } from "antd";
 import { Ochuba } from "../../assets";
 import "./auth.scss";
@@ -16,7 +16,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const formHadler = async () => {
+  const formHandler = async () => {
     fetch(`${baseUrl}/api/v1/auth/login`, {
       method: "post",
       headers: {
@@ -28,7 +28,6 @@ const Login = () => {
       .then((data) => {
         dispatch(setUser(data.user))
         dispatch(setToken(data.token))
-        localStorage.setItem("token", data.token);
         navigate("/admin/trading/sports")
       });
   };
@@ -47,7 +46,7 @@ const Login = () => {
       </Row>
       <div className="auth-box">
         <div className="auth-fields">
-          <Form onFinish={formHadler} layout="vertical">
+          <Form onFinish={formHandler} layout="vertical">
             <Row>
               <Col>
                 <h2>Admin Login</h2>
