@@ -34,13 +34,38 @@ exports.createTrading = async (req, res, next) => {
 
 exports.findTradings = async (req, res, next) => {
   try {
-    const tradings = await Trading.find({});
+    const tradings = await Trading.find({type: req.params.type});
 
     if (tradings) {
       return res.status(200).json({
         success: true,
         message: "Got Data Successfully",
         data: tradings,
+      });
+    }
+    return res.status(200).json({
+      success: false,
+      message: "No Data Found",
+      data: [],
+    });
+  } catch (err) {
+    return res.status(200).json({
+      success: false,
+      message: err.message,
+      data: [],
+    });
+  }
+};
+
+exports.findAllTradings = async (req, res, next) => {
+  try {
+    const tradings = await Trading.find({});
+
+    if (tradings) {
+      return res.status(200).json({
+        success: true,
+        message: "Got Data Successfully",
+        data: tradings.reverse(),
       });
     }
     return res.status(200).json({

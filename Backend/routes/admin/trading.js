@@ -3,25 +3,27 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 const {
-    createTrading,
-    findTradings
+  createTrading,
+  findTradings,
+  findAllTradings
 } = require("../../controllers/trading.controllers");
 
 var storage = multer.diskStorage({
-    destination: "public/uploads",
-    filename: function (req, file, cb) {
-      cb(
-        null,
-        file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-      );
-    },
-  });
-  
-  var upload = multer({
-    storage: storage,
-  });
+  destination: "public/uploads",
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
 
-router.post("/:type", upload.single("image"), createTrading);
+var upload = multer({
+  storage: storage,
+});
+
+router.get("/", findAllTradings);
 router.get("/:type", findTradings);
+router.post("/:type", upload.single("image"), createTrading);
 
 module.exports = router;
