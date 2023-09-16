@@ -1,4 +1,13 @@
-import { Col, Form, Input, Row, DatePicker, TimePicker } from "antd";
+import {
+  Col,
+  Form,
+  Input,
+  Row,
+  DatePicker,
+  TimePicker,
+  Spin,
+  message,
+} from "antd";
 const { TextArea } = Input;
 import TopBar from "../../../Component/Layout/topBar";
 import { useState } from "react";
@@ -12,7 +21,7 @@ type contectData = {
 };
 
 const Sports = () => {
-  const token = useSelector((state: any) => state.authReducer.token);
+  const token = useSelector((state: any) => state.authReducer.Admintoken);
   const baseUrl = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
   const [dataBody, setDataBody] = useState({
@@ -22,9 +31,13 @@ const Sports = () => {
     endTime: "",
   });
   const [img, setImg] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+
   const [team1, setTeam1] = useState<contectData>({
     image: null,
   });
+
+  const [form] = Form.useForm();
 
   const handleTeam1 = (event: any) => {
     const file = event.target.files[0];
@@ -37,30 +50,42 @@ const Sports = () => {
   };
 
   const formHandler = async () => {
-    let formData = new FormData();
-    Object.entries(dataBody).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-    if (img) {
-      formData.append("image", img);
-    }
-    fetch(`${baseUrl}/api/v1/admin/trading/sports`, {
-      method: "post",
-      headers: {
-        "x-sh-auth": token,
-      },
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setDataBody({
-          title: "",
-          resolution: "",
-          endDate: "",
-          endTime: "",
-        });
+    if (team1?.image) {
+      setLoading(true);
+
+      let formData = new FormData();
+      Object.entries(dataBody).forEach(([key, value]) => {
+        formData.append(key, value);
       });
+      if (img) {
+        formData.append("image", img);
+      }
+      fetch(`${baseUrl}/api/v1/admin/trading/sports`, {
+        method: "post",
+        headers: {
+          "x-sh-auth": token,
+        },
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setDataBody({
+            title: "",
+            resolution: "",
+            endDate: "",
+            endTime: "",
+          });
+          setLoading(false);
+          if (data?.success) {
+            form.resetFields();
+            message.success(data?.message);
+            setTeam1({ image: null });
+            navigate("/admin/dashboard")
+          }
+        });
+    } else {
+      message.warning("please upload image");
+    }
   };
 
   const onChange = (e: any) => {
@@ -69,9 +94,10 @@ const Sports = () => {
   };
 
   return (
-    <>
+    <Spin spinning={loading}>
       <TopBar title="Sports" breadcrumb={true} consdition={true} />
       <Form
+        form={form}
         onFinish={formHandler}
         layout="vertical"
         style={{ marginTop: "20px", paddingBottom: "30px" }}
@@ -114,22 +140,29 @@ const Sports = () => {
           </Col>
 
           <Col span={18}>
-            <Form.Item name="title" label="Title">
+            <Form.Item name="title" label="Title" rules={[{ required: true }]}>
               <Input
                 placeholder="Enter the Trade Title"
                 name="title"
                 id="title"
+                className="ant-input-affix-wrapper"
                 value={dataBody.title}
                 onChange={onChange}
               />
             </Form.Item>
           </Col>
           <Col span={18}>
-            <Form.Item name="resolution" label="Resolution">
+            <Form.Item
+              className="testarea"
+              name="resolution"
+              label="Resolution"
+              rules={[{ required: true }]}
+            >
               <TextArea
                 placeholder="Enter Resolution"
                 name="resolution"
                 id="resolution"
+                className="ant-input-affix-wrapper"
                 rows={4}
                 value={dataBody.resolution}
                 onChange={onChange}
@@ -138,22 +171,32 @@ const Sports = () => {
           </Col>
 
           <Col span={18}>
-            <Form.Item name="endDate" label="End Date">
+            <Form.Item
+              name="endDate"
+              label="End Date"
+              rules={[{ required: true }]}
+            >
               <Input
                 type="date"
                 name="endDate"
                 id="endDate"
+                className="ant-input-affix-wrapper"
                 onChange={onChange}
               />
             </Form.Item>
           </Col>
 
           <Col span={18}>
-            <Form.Item name="endTime" label="End Time">
+            <Form.Item
+              name="endTime"
+              label="End Time"
+              rules={[{ required: true }]}
+            >
               <Input
                 type="time"
                 name="endTime"
                 id="endTime"
+                className="ant-input-affix-wrapper"
                 onChange={onChange}
               />
             </Form.Item>
@@ -165,7 +208,7 @@ const Sports = () => {
           </Col>
         </Row>
       </Form>
-    </>
+    </Spin>
   );
 };
 

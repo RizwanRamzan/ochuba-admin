@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Col, Form, Input, Row } from "antd";
+import { Col, Form, Input, Row, Spin } from "antd";
 import { Ochuba } from "../../assets";
 import "./auth.scss";
 import "../../GeneralStyle/index.scss";
@@ -15,8 +15,10 @@ const Login = () => {
   const baseUrl = import.meta.env.VITE_BASE_URL;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const formHandler = async () => {
+    setLoading(true);
     fetch(`${baseUrl}/api/v1/auth/login`, {
       method: "post",
       headers: {
@@ -26,9 +28,11 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        dispatch(setUser(data.user))
-        dispatch(setToken(data.token))
-        navigate("/admin/trading/sports")
+        dispatch(setUser(data.user));
+        dispatch(setToken(data.token));
+        setLoading(false);
+
+        navigate("/admin/trading/sports");
       });
   };
 
@@ -38,63 +42,67 @@ const Login = () => {
   };
 
   return (
-    <div className="auth">
-      <Row style={{ width: "100%" }}>
-        <Col span={24}>
-          <img width={50} src={Ochuba} />
-        </Col>
-      </Row>
-      <div className="auth-box">
-        <div className="auth-fields">
-          <Form onFinish={formHandler} layout="vertical">
-            <Row>
-              <Col>
-                <h2>Admin Login</h2>
-              </Col>
-              <Col span={24}>
-                <Form.Item
-                  label="Email"
-                  rules={[
-                    {
-                      required: true,
-                      type: "email",
-                      message: "please enter valid email",
-                    },
-                  ]}
-                >
-                  <Input
-                    className="ant-input-affix-wrapper"
-                    placeholder="Please enter your email"
-                    name="email"
-                    id="email"
-                    value={userBody.email}
-                    onChange={onChange}
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <Form.Item
-                  label="Password"
-                  rules={[{ required: true, message: "please enter password" }]}
+    <Spin spinning={loading}>
+      <div className="auth">
+        <Row style={{ width: "100%" }}>
+          <Col span={24}>
+            <img width={50} src={Ochuba} />
+          </Col>
+        </Row>
+        <div className="auth-box">
+          <div className="auth-fields">
+            <Form onFinish={formHandler} layout="vertical">
+              <Row>
+                <Col>
+                  <h2>Admin Login</h2>
+                </Col>
+                <Col span={24}>
+                  <Form.Item
+                    label="Email"
+                    rules={[
+                      {
+                        required: true,
+                        type: "email",
+                        message: "please enter valid email",
+                      },
+                    ]}
                   >
-                  <Input.Password
-                    name="password"
-                    id="password"
-                    className="ant-input-affix-wrapper"
-                    placeholder="Please enter your password"
-                    value={userBody.password}
-                    onChange={onChange}
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <button style={{ width: "100%" }}>Login</button>
-              </Col>
-            </Row>
-          </Form>
+                    <Input
+                      className="ant-input-affix-wrapper"
+                      placeholder="Please enter your email"
+                      name="email"
+                      id="email"
+                      value={userBody.email}
+                      onChange={onChange}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={24}>
+                  <Form.Item
+                    label="Password"
+                    rules={[
+                      { required: true, message: "please enter password" },
+                    ]}
+                  >
+                    <Input.Password
+                      name="password"
+                      id="password"
+                      className="ant-input-affix-wrapper"
+                      placeholder="Please enter your password"
+                      value={userBody.password}
+                      onChange={onChange}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={24}>
+                  <button style={{ width: "100%" }}>Login</button>
+                </Col>
+              </Row>
+            </Form>
+          </div>
         </div>
       </div>
-    </div>
+    </Spin>
   );
 };
 
