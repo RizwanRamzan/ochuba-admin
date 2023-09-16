@@ -3,8 +3,6 @@ import TopBar from "../../../Component/Layout/topBar"
 import { useState } from "react";
 import { ImgUpload } from "../../../assets";
 
-
-
 type contectData = {
     image: any
 }
