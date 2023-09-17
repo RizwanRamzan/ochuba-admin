@@ -81,3 +81,28 @@ exports.findAllTradings = async (req, res, next) => {
     });
   }
 };
+
+exports.findByIdAndDelete = async (req, res, next) => {
+  try {
+    const deletedtrading = await Trading.findByIdAndDelete(req.params.id);
+
+    if (deletedtrading) {
+      return res.status(200).json({
+        success: true,
+        message: "Successfully delete the Trading Post",
+        data: [],
+      });
+    }
+    return res.status(200).json({
+      success: false,
+      message: "Unable to delete the Trading Post",
+      data: [],
+    });
+  } catch (err) {
+    return res.status(200).json({
+      success: false,
+      message: err.message,
+      data: [],
+    });
+  }
+};

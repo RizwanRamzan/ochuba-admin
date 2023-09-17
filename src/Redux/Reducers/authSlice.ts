@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   user: { email: "", password: "", role: "" },
-  token: '',
+  Admintoken: '',
   FirstTime: true,
   userDetails: {},
   booking:{}
@@ -16,11 +16,11 @@ const userSlice = createSlice({
       state.user = action.payload;
     },
     setToken: (state, action) => {
-      state.token = action.payload;
+      state.Admintoken = action.payload;
     },
     signout: (state) => {
       state.user = { email: "", password: "", role: "" };
-      state.token = ''
+      state.Admintoken = ''
     },
     setUserCompleteDetails: (state, action) => {
       state.userDetails = action.payload

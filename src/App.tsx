@@ -6,7 +6,7 @@ import AuthRoutes from './Routes/AuthRoutes';
 
 function App() {
 
-  const token = useSelector((state: any) => state.authReducer.token);
+  const token = useSelector((state: any) => state.authReducer.Admintoken);
 
   return (
     <>

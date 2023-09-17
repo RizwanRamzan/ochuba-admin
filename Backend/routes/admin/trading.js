@@ -5,7 +5,8 @@ const path = require("path");
 const {
   createTrading,
   findTradings,
-  findAllTradings
+  findAllTradings,
+  deleteTrading
 } = require("../../controllers/trading.controllers");
 
 var storage = multer.diskStorage({
@@ -25,5 +26,6 @@ var upload = multer({
 router.get("/", findAllTradings);
 router.get("/:type", findTradings);
 router.post("/:type", upload.single("image"), createTrading);
+router.delete("/:id", deleteTrading);
 
 module.exports = router;

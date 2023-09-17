@@ -25,6 +25,10 @@ const tradingSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  category: {
+    type: String,
+    default: "",
+  },
 });
 
 module.exports = mongoose.model("Trading", tradingSchema);
