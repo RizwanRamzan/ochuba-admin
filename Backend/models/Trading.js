@@ -29,6 +29,11 @@ const tradingSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  result: {
+    type: String,
+    default: "",
+  },
+  bids: [],
 });
 
 module.exports = mongoose.model("Trading", tradingSchema);
