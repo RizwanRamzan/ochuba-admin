@@ -59,7 +59,9 @@ exports.findTradings = async (req, res, next) => {
 
 exports.findAllTradings = async (req, res, next) => {
   try {
-    const tradings = await Trading.find({});
+    const tradings = await Trading.find({
+      result: { $eq: "" }
+    });
 
     if (tradings) {
       return res.status(200).json({
