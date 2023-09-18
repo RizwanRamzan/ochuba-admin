@@ -18,7 +18,7 @@ exports.userSignup = async (req, res, next) => {
     const token = jsonwebtoken.sign(
       {
         data: [user.email, user._id],
-        role: user.role,
+        admin: user.admin,
       },
       "" + process.env.JWT_SECRET
     );
@@ -28,6 +28,7 @@ exports.userSignup = async (req, res, next) => {
     if (!result) {
       return next(new ErrorResponse("Signup failed", 400));
     }
+    result.password = undefined;
     return res.status(200).json({
       success: true,
       message: "Successfully Created the user",
@@ -54,11 +55,11 @@ exports.userLogin = async (req, res, next) => {
         const token = jsonwebtoken.sign(
           {
             data: [result.email, result._id],
-            role: "admin",
+            admin: result.admin,
           },
           "" + process.env.JWT_SECRET
         );
-        console.log(token);
+        result.password = undefined;
         return res.status(200).json({
           success: true,
           message: "Successfully Logged in",
