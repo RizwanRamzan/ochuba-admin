@@ -31,7 +31,6 @@ const Login = () => {
         dispatch(setUser(data.user));
         dispatch(setToken(data.token));
         setLoading(false);
-
         navigate("/admin/trading/sports");
       });
   };
