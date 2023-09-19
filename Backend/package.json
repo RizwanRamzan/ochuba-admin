@@ -21,6 +21,7 @@
     "multer": "*",
     "nodemailer": "^6.9.5",
     "nodemon": "^2.0.22",
-    "softcity": "file:.."
+    "softcity": "file:..",
+    "stripe": "^13.6.0"
   }
 }
