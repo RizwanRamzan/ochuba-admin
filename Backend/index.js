@@ -1,6 +1,8 @@
 const express = require('express')
 const connectToMongo = require('./config/db')
 const cors = require("cors");
+// CALL ENV FILE
+require("dotenv").config();
 
 connectToMongo()
 
