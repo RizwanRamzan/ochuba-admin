@@ -1,5 +1,6 @@
 const Trading = require("../models/Trading");
-const stripe = require("stripe")(process.env.Secret_key);
+const Flutterwave = require("flutterwave-node-v3");
+const flw = new Flutterwave(process.env.PUBLIC_KEY, process.env.SECRET_KEY);
 
 exports.createTrading = async (req, res, next) => {
   try {
@@ -137,41 +138,74 @@ exports.calculateResult = async (req, res, next) => {
   }
 };
 
-exports.Payment = async (req, res) => {
+exports.Bid = async (req, res) => {
   try {
-    const { bid, amount, token } = req.body;
-
-    // Create a customer in Stripe
-    const customer = await stripe.customers.create({
-      email: req.user.email,
-      source: token, // Token obtained from the client-side
-    });
-
-    // Create a Stripe charge associated with the customer
-    const charge = await stripe.charges.create({
-      amount,
-      currency: "NGN",
-      customer: customer.id, // Associate the customer with the charge
-    });
+    const { bid, amount } = req.body;
 
     // Find the Trading document by its ID
     const trading = await Trading.findById(req.params.id);
 
     if (!trading) {
-      return res.status(404).json({ error: 'Trading not found' });
+      return res.status(404).json({ error: "Trading not found" });
     }
 
     // Add the charge to the trading's bidding array
     trading.bids.push({
       bid: bid,
-      charge: charge,
-      userId: req.user.id
+      amount: amount,
+      userId: req.user.id,
     });
 
     // Save the updated trading document
     await trading.save();
 
-    res.status(200).json({ message: "Payment successful", charge });
+    // Find the Trading document by its ID
+    const user = await Trading.findById(req.user.id);
+
+    // Add the charge to the trading's bidding array
+    user.amount -= amount;
+
+    // Save the updated trading document
+    await user.save();
+
+    res.status(200).json({ message: "Bid Placed successfully", charge });
+  } catch (error) {
+    console.error("Payment failed:", error);
+    res.status(500).json({ error: "Payment failed" });
+  }
+};
+
+exports.Payment = async (req, res) => {
+  try {
+    const { card_number, cvv, expiry_month, expiry_year, amount } = req.body;
+
+    // Create a customer in Stripe
+    const payload = {
+      card_number: card_number,
+      cvv: cvv,
+      expiry_month: expiry_month,
+      expiry_year: expiry_year,
+      currency: "NGN",
+      amount: amount,
+      email: req.user.email,
+      fullname: req.user.fullName,
+      tx_ref: "YOUR_PAYMENT_REFERENCE",
+      enckey: process.env.ENCRYPTION_KEY,
+    };
+    flw.Charge.card(payload).then(async (response) => {
+      console.log(response);
+
+      // Find the Trading document by its ID
+      const user = await Trading.findById(req.user.id);
+
+      // Add the charge to the trading's bidding array
+      user.amount += amount;
+
+      // Save the updated trading document
+      await user.save();
+
+      res.status(200).json({ message: "Payment successful", charge });
+    });
   } catch (error) {
     console.error("Payment failed:", error);
     res.status(500).json({ error: "Payment failed" });

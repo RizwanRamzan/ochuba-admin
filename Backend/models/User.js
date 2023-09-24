@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema({
     profilePhoto:{
         type:String,
         default:''
+    },
+    amount:{
+        type: Number,
+        default: 0
     }
 })
 
