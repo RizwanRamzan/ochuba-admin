@@ -11,6 +11,7 @@ const {
   Payment,
   Bid
 } = require("../../controllers/trading.controllers");
+const checkAuth = require("../../middleware/check-auth");
 
 var storage = multer.diskStorage({
   destination: "public/uploads",
@@ -27,11 +28,11 @@ var upload = multer({
 });
 
 router.get("/", findAllTradings);
+router.post("/payment", checkAuth, Payment);
+router.post("/bid/:id", Bid);
+router.post("/result/:id", calculateResult);
 router.get("/:type", findTradings);
 router.post("/:type", upload.single("image"), createTrading);
 router.delete("/:id", findByIdAndDelete);
-router.post("/result/:id", calculateResult);
-router.post("/payment", Payment);
-router.post("/bid/:id", Bid);
 
 module.exports = router;
