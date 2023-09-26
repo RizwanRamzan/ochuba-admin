@@ -95,3 +95,26 @@ exports.getAllUsers = async (req, res, next) => {
     return next(new ErrorResponse(err, 400));
   }
 };
+
+exports.getSingleUser = async (req, res, next) => {
+  try {
+    let user = await User.findOne({
+      _id: mongoose.Types.ObjectId(req.user.data[1]),
+    });
+    user.password = undefined;
+    if (user) {
+      return res.status(200).json({
+        success: true,
+        message: "user found",
+        data: user,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "user not found",
+      data: user,
+    });
+  } catch (err) {
+    return next(new ErrorResponse(err, 400));
+  }
+};
