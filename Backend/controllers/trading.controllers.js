@@ -59,6 +59,31 @@ exports.findTradings = async (req, res, next) => {
   }
 };
 
+exports.findTradingById = async (req, res, next) => {
+  try {
+    const trading = await Trading.findById(req.params.id);
+
+    if (trading) {
+      return res.status(200).json({
+        success: true,
+        message: "Got Data Successfully",
+        data: trading,
+      });
+    }
+    return res.status(200).json({
+      success: false,
+      message: "No Data Found",
+      data: [],
+    });
+  } catch (err) {
+    return res.status(200).json({
+      success: false,
+      message: err.message,
+      data: [],
+    });
+  }
+};
+
 exports.findAllTradings = async (req, res, next) => {
   try {
     const tradings = await Trading.find({

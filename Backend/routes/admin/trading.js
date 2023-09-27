@@ -9,7 +9,8 @@ const {
   findByIdAndDelete,
   calculateResult,
   Payment,
-  Bid
+  Bid,
+  findTradingById
 } = require("../../controllers/trading.controllers");
 const checkAuth = require("../../middleware/check-auth");
 
@@ -31,6 +32,7 @@ router.get("/", findAllTradings);
 router.post("/payment", checkAuth, Payment);
 router.post("/bid/:id", Bid);
 router.post("/result/:id", calculateResult);
+router.get("/single/:id", findTradingById);
 router.get("/:type", findTradings);
 router.post("/:type", upload.single("image"), createTrading);
 router.delete("/:id", findByIdAndDelete);
