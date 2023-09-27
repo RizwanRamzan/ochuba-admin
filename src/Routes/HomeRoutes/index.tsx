@@ -14,7 +14,7 @@ const HomeRoutes = () => {
     return (
         <Routes>
           
-            <Route path={"*" } element={<Navigate to="/admin/trading/sports" replace />} />
+            <Route path={"*" } element={<Navigate to="/admin/dashboard" replace />} />
             {/* Dashboard */}
             <Route path="/admin/dashboard" element={<Dashboard />} />
             <Route path="/admin/trading/sports" element={<Sports />} />

@@ -173,14 +173,10 @@ const Sports = () => {
               label="Category"
               rules={[{ required: true }]}
             >
-              <Select
-                placeholder="Please Select a Category"
+              <Input
+                placeholder="Please enter a Category"
+                className="ant-input-affix-wrapper"
                 style={{ width: "100%" }}
-                options={[
-                  { value: "football", label: "Football" },
-                  { value: "cricket", label: "Cricket" },
-                  { value: "badminton", label: "Badminton" }
-                ]}
               />
             </Form.Item>
           </Col>

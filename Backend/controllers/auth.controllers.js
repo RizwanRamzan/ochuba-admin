@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const ejs = require("ejs");
+const { mongoose } = require("mongoose");
 
 exports.userSignup = async (req, res, next) => {
   try {
@@ -98,9 +99,7 @@ exports.getAllUsers = async (req, res, next) => {
 
 exports.getSingleUser = async (req, res, next) => {
   try {
-    let user = await User.findOne({
-      _id: mongoose.Types.ObjectId(req.user.data[1]),
-    });
+    let user = await User.findById(req.user.data[1]);
     user.password = undefined;
     if (user) {
       return res.status(200).json({

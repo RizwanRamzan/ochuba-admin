@@ -1,4 +1,5 @@
 const Trading = require("../models/Trading");
+const User = require("../models/User");
 const Flutterwave = require("flutterwave-node-v3");
 const flw = new Flutterwave(process.env.PUBLIC_KEY, process.env.SECRET_KEY);
 
@@ -160,15 +161,15 @@ exports.Bid = async (req, res) => {
     await trading.save();
 
     // Find the Trading document by its ID
-    const user = await Trading.findById(req.user.id);
+    const user = await User.findById(req.user.data[1]);
 
     // Add the charge to the trading's bidding array
-    user.amount -= amount;
+    user.amount = parseInt(user.amount) - parseInt(amount);;
 
     // Save the updated trading document
     await user.save();
 
-    res.status(200).json({ message: "Bid Placed successfully", charge });
+    res.status(200).json({ message: "Bid Placed successfully", amount });
   } catch (error) {
     console.error("Payment failed:", error);
     res.status(500).json({ error: "Payment failed" });
@@ -176,9 +177,10 @@ exports.Bid = async (req, res) => {
 };
 
 exports.Payment = async (req, res) => {
+  // console.log(req,"req.bodyreq.bodyreq.bodyreq.bodyreq.body")
   try {
     const { card_number, cvv, expiry_month, expiry_year, amount } = req.body;
-
+    const user = await User.findById(req.user.data[1]);
     // Create a customer in Stripe
     const payload = {
       card_number: card_number,
@@ -187,24 +189,21 @@ exports.Payment = async (req, res) => {
       expiry_year: expiry_year,
       currency: "NGN",
       amount: amount,
-      email: req.user.email,
-      fullname: req.user.fullName,
+      email: req.user.data[0],
+      fullname: user.fullName,
       tx_ref: "YOUR_PAYMENT_REFERENCE",
       enckey: process.env.ENCRYPTION_KEY,
     };
     flw.Charge.card(payload).then(async (response) => {
       console.log(response);
 
-      // Find the Trading document by its ID
-      const user = await Trading.findById(req.user.id);
-
       // Add the charge to the trading's bidding array
-      user.amount += amount;
+      user.amount = parseInt(user.amount) + parseInt(amount);
 
       // Save the updated trading document
       await user.save();
 
-      res.status(200).json({ message: "Payment successful", charge });
+      res.status(200).json({ message: "Payment successful", amount: amount });
     });
   } catch (error) {
     console.error("Payment failed:", error);
