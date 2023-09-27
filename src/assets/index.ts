@@ -41,7 +41,7 @@ export { default as VideoIcon } from "./svg/DashboardIcons/videoIocn.svg"
 // Login Logo
 
 export { default as LoginLogo } from "./Login-Logo.svg"
-export { default as Logo } from "./logo.jpg"
+export { default as Logo } from "./logo.png"
 
 
 // Details

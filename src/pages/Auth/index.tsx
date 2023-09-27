@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Col, Form, Input, Row, Spin } from "antd";
-import { Ochuba } from "../../assets";
+import { Logo, Ochuba } from "../../assets";
 import "./auth.scss";
 import "../../GeneralStyle/index.scss";
 import { useNavigate } from "react-router-dom";
@@ -45,7 +45,7 @@ const Login = () => {
       <div className="auth">
         <Row style={{ width: "100%" }}>
           <Col span={24}>
-            <img width={50} src={Ochuba} />
+            <img width={200} src={Logo} />
           </Col>
         </Row>
         <div className="auth-box">

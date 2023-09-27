@@ -3,13 +3,13 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 const {
+  Payment,
+  Bid,
   createTrading,
   findTradings,
   findAllTradings,
   findByIdAndDelete,
   calculateResult,
-  Payment,
-  Bid,
   findTradingById
 } = require("../../controllers/trading.controllers");
 const checkAuth = require("../../middleware/check-auth");
@@ -28,9 +28,10 @@ var upload = multer({
   storage: storage,
 });
 
+
 router.get("/", findAllTradings);
 router.post("/payment", checkAuth, Payment);
-router.post("/bid/:id", Bid);
+router.post("/bid/:id", checkAuth, Bid);
 router.post("/result/:id", calculateResult);
 router.get("/single/:id", findTradingById);
 router.get("/:type", findTradings);

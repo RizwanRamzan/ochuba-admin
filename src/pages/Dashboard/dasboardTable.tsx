@@ -3,8 +3,9 @@ import moment from "moment";
 // General Style
 import "../../GeneralStyle/index.scss";
 import { Edit, LogoutIcon, Trash } from "../../assets";
+import { ReactSVG } from "react-svg";
 
-const DashboardTable = ({ mobileResponsive, data, EndEvent,EditEvent,DeleteEvents,EditModal,OpenModal }: any) => {
+const DashboardTable = ({ mobileResponsive, data, EndEvent,DeleteEvents,OpenModal,setUser }: any) => {
   console.log(data, "dataaaaaaaaaaaaaaaaaaaa");
 
   const columns = [
@@ -19,6 +20,13 @@ const DashboardTable = ({ mobileResponsive, data, EndEvent,EditEvent,DeleteEvent
       key: "8",
       title: "Type",
       render: (_: any, object: any) => object?.type || "-",
+      width: "10%",
+    },
+
+    {
+      key: "8",
+      title: "Category",
+      render: (_: any, object: any) => object?.category || "-",
       width: "10%",
     },
   
@@ -41,20 +49,21 @@ const DashboardTable = ({ mobileResponsive, data, EndEvent,EditEvent,DeleteEvent
       title: "Action",
       render: (_: any, object: any) => (
         <div style={{ display: "flex", gap: 20, justifyContent: "center" }}>
-          <img
+          <ReactSVG
             onClick={() =>{
                  EndEvent(object)
+                 setUser(object)
                  OpenModal()
                 }}
-            style={{ cursor: "pointer" }}
             width={20}
             src={LogoutIcon}
+            className="end-point"
           />
-          <img onClick={() => {
+          {/* <img onClick={() => {
             EditEvent(object)
             EditModal()
-            }} style={{ cursor: "pointer" }} width={20} src={Edit} />
-          <img onClick={() => DeleteEvents(object)} style={{ cursor: "pointer" }} width={20} src={Trash} />
+            }} style={{ cursor: "pointer" }} width={20} src={Edit} /> */}
+          <ReactSVG onClick={() => DeleteEvents(object)} style={{ cursor: "pointer" }} width={20} src={Trash} />
         </div>
       ),
       width: "10%",
