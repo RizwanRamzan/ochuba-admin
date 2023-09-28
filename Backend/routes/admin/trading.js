@@ -10,7 +10,8 @@ const {
   findAllTradings,
   findByIdAndDelete,
   calculateResult,
-  findTradingById
+  findTradingById,
+  Sell
 } = require("../../controllers/trading.controllers");
 const checkAuth = require("../../middleware/check-auth");
 
@@ -31,6 +32,7 @@ var upload = multer({
 
 router.get("/", findAllTradings);
 router.post("/payment", checkAuth, Payment);
+router.post("/sell/:id", checkAuth, Sell);
 router.post("/bid/:id", checkAuth, Bid);
 router.post("/result/:id", calculateResult);
 router.get("/single/:id", findTradingById);

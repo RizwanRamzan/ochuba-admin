@@ -166,21 +166,22 @@ exports.calculateResult = async (req, res, next) => {
 
 exports.Sell = async (req, res) => {
   try {
-    const { bid, amount } = req.body;
+    const { old, amount } = req.body;
 
+    var result = (old * 10) / 100;
     // Find the Trading document by its ID
     const user = await User.findById(req.user.data[1]);
 
     // Add the charge to the trading's bidding array
-    user.amount = parseInt(user.amount) - parseInt(amount);;
+    user.amount = parseInt(user.amount) + parseInt(amount) - parseInt(result);
 
     // Save the updated trading document
     await user.save();
 
-    res.status(200).json({ message: "Bid Placed successfully", amount });
+    res.status(200).json({ message: "Sell Bid successfully", amount });
   } catch (error) {
-    console.error("Payment failed:", error);
-    res.status(500).json({ error: "Payment failed" });
+    console.error("failed:", error);
+    res.status(500).json({ error: "failed" });
   }
 };
 
