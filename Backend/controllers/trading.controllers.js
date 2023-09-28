@@ -164,6 +164,26 @@ exports.calculateResult = async (req, res, next) => {
   }
 };
 
+exports.Sell = async (req, res) => {
+  try {
+    const { bid, amount } = req.body;
+
+    // Find the Trading document by its ID
+    const user = await User.findById(req.user.data[1]);
+
+    // Add the charge to the trading's bidding array
+    user.amount = parseInt(user.amount) - parseInt(amount);;
+
+    // Save the updated trading document
+    await user.save();
+
+    res.status(200).json({ message: "Bid Placed successfully", amount });
+  } catch (error) {
+    console.error("Payment failed:", error);
+    res.status(500).json({ error: "Payment failed" });
+  }
+};
+
 exports.Bid = async (req, res) => {
   try {
     const { bid, amount } = req.body;
