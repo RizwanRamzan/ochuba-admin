@@ -37,6 +37,7 @@ const userSchema = new mongoose.Schema({
     default: 0,
   },
   bids: [],
+  history: [],
 });
 
 module.exports = mongoose.model("User", userSchema);
