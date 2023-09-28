@@ -211,7 +211,7 @@ exports.Bid = async (req, res) => {
     // Add the charge to the trading's bidding array
     user.amount = parseInt(user.amount) - parseInt(amount);;
 
-    trading.bids.push({
+    user.bids.push({
       bid: bid,
       amount: amount,
       tradingId: trading.id,
@@ -250,6 +250,8 @@ exports.Payment = async (req, res) => {
 
       // Add the charge to the trading's bidding array
       user.amount = parseInt(user.amount) + parseInt(amount);
+
+      user.history.push(amount)
 
       // Save the updated trading document
       await user.save();
