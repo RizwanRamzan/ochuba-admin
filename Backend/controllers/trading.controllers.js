@@ -176,12 +176,12 @@ exports.Sell = async (req, res) => {
 
     // Add the charge to the trading's bidding array
     user.amount = (parseInt(user.amount) + parseInt(amount)) - parseInt(result);
-    user.profit = (newAmount) - parseInt(result)
+    user.profit = newAmount
 
     // Save the updated trading document
     await user.save();
 
-    res.status(200).json({ message: "Sell Bid successfully", amount });
+    res.status(200).json({ message: "Sell Bid successfully", amount: amount, profit: profit });
   } catch (error) {
     console.error("failed:", error);
     res.status(500).json({ error: "failed" });
