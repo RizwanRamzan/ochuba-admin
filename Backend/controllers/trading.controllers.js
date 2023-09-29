@@ -176,7 +176,7 @@ exports.Sell = async (req, res) => {
 
     // Add the charge to the trading's bidding array
     user.amount = (parseInt(user.amount) + parseInt(amount)) - parseInt(result);
-    user.profit = newAmount
+    user.profit = parseInt(user.profit) + parseInt(newAmount)
 
     // Save the updated trading document
     await user.save();
