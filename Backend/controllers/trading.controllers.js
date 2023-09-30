@@ -166,9 +166,9 @@ exports.calculateResult = async (req, res, next) => {
 
 exports.Sell = async (req, res) => {
   try {
-    const { old, amount } = req.body;
+    const { oldamount, latestamount, share } = req.body;
 
-    var newAmount = parseInt(old) - parseInt(amount)
+    var newAmount = parseInt(latestamount) - (parseInt(oldamount) * parseFloat(amount))
     var result = (newAmount * 10) / 100;
 
     // Find the Trading document by its ID
@@ -205,8 +205,9 @@ exports.Bid = async (req, res) => {
     trading.bids.push({
       bid: bid,
       share: share,
-      amount: bidamount,
-      userId: req.user.id,
+      oldamount: amount,
+      bidamount: bidamount,
+      userId: req.user.data[1],
     });
 
     // Save the updated trading document
@@ -216,12 +217,13 @@ exports.Bid = async (req, res) => {
     const user = await User.findById(req.user.data[1]);
 
     // Add the charge to the trading's bidding array
-    user.amount = parseInt(user.amount) - parseInt(bidamount);;
+    user.amount = (parseInt(user.amount) - parseInt(bidamount)).toFixed(2);
 
     user.bids.push({
       bid: bid,
       share: share,
-      amount: bidamount,
+      oldamount: amount,
+      bidamount: bidamount,
       tradingId: trading.id,
     });
 
