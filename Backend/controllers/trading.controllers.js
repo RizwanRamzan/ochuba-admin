@@ -190,7 +190,7 @@ exports.Sell = async (req, res) => {
 
 exports.Bid = async (req, res) => {
   try {
-    const { bid, amount } = req.body;
+    const { bid, amount, bidamount } = req.body;
 
     // Find the Trading document by its ID
     const trading = await Trading.findById(req.params.id);
@@ -198,11 +198,14 @@ exports.Bid = async (req, res) => {
     if (!trading) {
       return res.status(404).json({ error: "Trading not found" });
     }
+    
+    var share = parseInt(bidamount)/parseInt(amount)
 
     // Add the charge to the trading's bidding array
     trading.bids.push({
       bid: bid,
-      amount: amount,
+      share: share,
+      amount: bidamount,
       userId: req.user.id,
     });
 
@@ -213,11 +216,12 @@ exports.Bid = async (req, res) => {
     const user = await User.findById(req.user.data[1]);
 
     // Add the charge to the trading's bidding array
-    user.amount = parseInt(user.amount) - parseInt(amount);;
+    user.amount = parseInt(user.amount) - parseInt(bidamount);;
 
     user.bids.push({
       bid: bid,
-      amount: amount,
+      share: share,
+      amount: bidamount,
       tradingId: trading.id,
     });
 
