@@ -167,6 +167,7 @@ exports.calculateResult = async (req, res, next) => {
 
 exports.Sell = async (req, res) => {
   try {
+    console.log(req.body)
     const { oldamount, latestamount, share, bid } = req.body;
 
     var newAmount =
@@ -200,8 +201,8 @@ exports.Sell = async (req, res) => {
 
     res.status(200).json({
       message: "Sell Bid successfully",
-      amount: amount,
-      profit: profit,
+      amount: user?.amount,
+      profit: user?.profit,
     });
   } catch (error) {
     console.error("failed:", error);
