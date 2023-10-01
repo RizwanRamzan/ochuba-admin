@@ -167,10 +167,10 @@ exports.calculateResult = async (req, res, next) => {
 
 exports.Sell = async (req, res) => {
   try {
-    const { oldamount, latestamount, share } = req.body;
+    const { oldamount, latestamount, share, bid } = req.body;
 
     var newAmount =
-      parseInt(latestamount) - parseInt(oldamount) * parseFloat(amount);
+      parseInt(latestamount) - parseInt(oldamount) * parseFloat(share);
     var result = (newAmount * 10) / 100;
 
     // Find the Trading document by its ID
@@ -179,6 +179,21 @@ exports.Sell = async (req, res) => {
     // Add the charge to the trading's bidding array
     user.amount = parseInt(user.amount) + parseInt(amount) - parseInt(result);
     user.profit = parseInt(user.profit) + parseInt(newAmount);
+
+    const existingBidIndex = user.bids.findIndex(
+      (existingBid) => existingBid.tradingId === req.params.id
+    );
+
+    // Remove the existing bid at the specified index
+    if (existingBidIndex !== -1 && user.bids[existingBidIndex].bid == bid) {
+      // If an existing bid is found, update its values
+      user.bids[existingBidIndex].share = (
+        parseFloat(user.bids[existingBidIndex].share) - parseFloat(share)
+      ).toFixed(2);
+      user.bids[existingBidIndex].sold = user.bids[existingBidIndex].share > 0 ? false: true
+      // Mark the 'bids' array as modified
+      user.markModified("bids");
+    }
 
     // Save the updated trading document
     await user.save();
@@ -226,11 +241,12 @@ exports.Bid = async (req, res) => {
     user.amount = parseInt(user.amount) - parseInt(bidamount);
 
     const existingBidIndex = user.bids.findIndex(
-      (existingBid) => existingBid.tradingId === req.params.id && existingBid.bid === req.body.bid
+      (existingBid) =>
+        existingBid.tradingId === req.params.id &&
+        existingBid.bid === req.body.bid
     );
 
     if (existingBidIndex !== -1 && user.bids[existingBidIndex].bid == bid) {
-      console.log(user.bids[existingBidIndex], "before");
       // If an existing bid is found, update its values
       user.bids[existingBidIndex].share = (
         parseFloat(user.bids[existingBidIndex].share) + parseFloat(share)
@@ -248,7 +264,6 @@ exports.Bid = async (req, res) => {
       ).toString();
       // Mark the 'bids' array as modified
       user.markModified("bids");
-      console.log(user.bids[existingBidIndex], "after");
     } else {
       // If no existing bid is found, push a new bid
       user.bids.push({
@@ -257,6 +272,7 @@ exports.Bid = async (req, res) => {
         oldamount: amount,
         bidamount: bidamount,
         tradingId: trading.id,
+        sold: false,
       });
     }
 
