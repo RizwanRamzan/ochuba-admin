@@ -272,7 +272,8 @@ exports.Bid = async (req, res) => {
         oldamount: amount,
         bidamount: bidamount,
         tradingId: trading.id,
-        sold: false,
+        tradingName: trading.title,
+        sold: false
       });
     }
 
