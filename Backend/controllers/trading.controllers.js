@@ -177,7 +177,7 @@ exports.Sell = async (req, res) => {
     const user = await User.findById(req.user.data[1]);
 
     // Add the charge to the trading's bidding array
-    user.amount = parseInt(user.amount) + parseInt(amount) - parseInt(result);
+    user.amount = parseInt(user.amount) + parseInt(latestamount) - parseInt(result);
     user.profit = parseInt(user.profit) + parseInt(newAmount);
 
     const existingBidIndex = user.bids.findIndex(
