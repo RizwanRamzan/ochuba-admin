@@ -1,15 +1,22 @@
-import { Col, Form, Input, Row, Spin, message, Select } from "antd";
+import { Col, Form, Input, Row, Spin, message } from "antd";
 const { TextArea } = Input;
 import TopBar from "../../../Component/Layout/topBar";
 import { useState } from "react";
 import { ImgUpload } from "../../../assets";
-import "./sports.scss";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import "./sports.scss";
 
 type contectData = {
   image: any;
 };
+
+type MyObject = {
+  bid: String,
+  share: String,
+  bidamount: String
+  // userId: String
+}
 
 const Sports = () => {
   const token = useSelector((state: any) => state.authReducer.Admintoken);
@@ -19,10 +26,11 @@ const Sports = () => {
     title: "",
     resolution: "",
     endDate: "", // Add endDate and endTime fields to dataBody
-    endTime: "",
+    endTime: ""
   });
   const [img, setImg] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [bid, setBid] = useState<MyObject[]>([])
 
   const [team1, setTeam1] = useState<contectData>({
     image: null,
@@ -49,6 +57,7 @@ const Sports = () => {
         formData.append(key, value);
       });
       formData.append("category", value.category);
+      formData.append(`bids`, JSON.stringify(bid));
       if (img) {
         formData.append("image", img);
       }
@@ -65,7 +74,7 @@ const Sports = () => {
             title: "",
             resolution: "",
             endDate: "",
-            endTime: "",
+            endTime: ""
           });
           setLoading(false);
           if (data?.success) {
@@ -83,6 +92,16 @@ const Sports = () => {
   const onChange = (e: any) => {
     const { name, value } = e.target;
     setDataBody({ ...dataBody, [name]: value });
+  };
+
+  const onChangePrice = (e: any) => {
+    const { name, value } = e.target;
+    var newArr = [...bid, {
+      bid: name,
+      share: "1",
+      bidamount: value
+    }]
+    setBid(newArr)
   };
 
   // const handleChange = (value: string) => {
@@ -210,6 +229,36 @@ const Sports = () => {
                 id="endTime"
                 className="ant-input-affix-wrapper"
                 onChange={onChange}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={18}>
+            <Form.Item
+              name="yes"
+              label="Start Price for Yes"
+              rules={[{ required: true }]}
+            >
+              <Input
+                type="number"
+                name="yes"
+                id="yes"
+                className="ant-input-affix-wrapper"
+                onChange={onChangePrice}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={18}>
+            <Form.Item
+              name="no"
+              label="Start Price for No"
+              rules={[{ required: true }]}
+            >
+              <Input
+                type="number"
+                name="no"
+                id="no"
+                className="ant-input-affix-wrapper"
+                onChange={onChangePrice}
               />
             </Form.Item>
           </Col>
