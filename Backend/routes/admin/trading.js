@@ -11,7 +11,9 @@ const {
   findByIdAndDelete,
   calculateResult,
   findTradingById,
-  Sell
+  Sell,
+  Withdraw,
+  findWithdraws
 } = require("../../controllers/trading.controllers");
 const checkAuth = require("../../middleware/check-auth");
 
@@ -32,6 +34,8 @@ var upload = multer({
 
 router.get("/", findAllTradings);
 router.post("/payment", checkAuth, Payment);
+router.get("/withdraw", findWithdraws);
+router.post("/withdraw", checkAuth, Withdraw);
 router.post("/sell/:id", checkAuth, Sell);
 router.post("/bid/:id", checkAuth, Bid);
 router.post("/result/:id", calculateResult);
