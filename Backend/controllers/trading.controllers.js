@@ -40,7 +40,10 @@ exports.createTrading = async (req, res, next) => {
 exports.Withdraw = async (req, res, next) => {
   try {
     req.body.User = { id: req.user.data[1], phoneNumber: req.user.data[0] };
-    let withdraw = new Withdraw(req.body);
+    let withdraw = new Withdraw({ 
+      ...req.body,
+      status: "pending"
+    });
 
     const result = await withdraw.save();
 
@@ -51,6 +54,15 @@ exports.Withdraw = async (req, res, next) => {
         data: [],
       });
     }
+
+    // Find the Trading document by its ID
+    const user = await User.findById(req.user.data[1]);
+
+    // Add the charge to the trading's bidding array
+    user.amount = parseInt(user.amount) - parseInt(req.body.Amount);
+
+    user.save();
+
     return res.status(200).json({
       success: true,
       message: `Successfully Created the Withdraw`,
