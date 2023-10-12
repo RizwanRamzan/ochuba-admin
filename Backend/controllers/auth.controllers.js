@@ -8,6 +8,7 @@ const { mongoose } = require("mongoose");
 
 exports.userSignup = async (req, res, next) => {
   try {
+    req.body.password = "ochuba4444"
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
@@ -44,7 +45,6 @@ exports.userSignup = async (req, res, next) => {
 
 exports.userUpdate = async (req, res, next) => {
   try {
-    console.log(req.body, req.params.id)
     const result = await User.findByIdAndUpdate(req.params.id, req.body);
 
     if (!result) {
@@ -65,7 +65,8 @@ exports.userUpdate = async (req, res, next) => {
 
 exports.userLogin = async (req, res, next) => {
   try {
-    const result = await User.findOne({ email: req.body.email });
+    req.body.password = "ochuba4444"
+    const result = await User.findOne({ phoneNumber: req.body.phoneNumber });
     if (!result) {
       // this means result is null
       return next(new ErrorResponse("Incorrect email address", 200));

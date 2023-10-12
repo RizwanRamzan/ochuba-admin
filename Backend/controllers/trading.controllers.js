@@ -39,7 +39,7 @@ exports.createTrading = async (req, res, next) => {
 
 exports.Withdraw = async (req, res, next) => {
   try {
-    req.body.User = { id: req.user.data[1], email: req.user.data[0] };
+    req.body.User = { id: req.user.data[1], phoneNumber: req.user.data[0] };
     let withdraw = new Withdraw(req.body);
 
     const result = await withdraw.save();
