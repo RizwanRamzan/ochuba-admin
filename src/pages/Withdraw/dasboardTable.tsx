@@ -14,12 +14,18 @@ const DashboardTable = ({ mobileResponsive, data}: any) => {
     },
     {
       key: "2",
+      title: "Amount",
+      render: (_: any, object: any) => object?.Amount || "-",
+      width: "22%",
+    },
+    {
+      key: "3",
       title: "Email",
       render: (_: any, object: any) => object?.User.email || "-",
       width: "22%",
     },
     {
-      key: "3",
+      key: "4",
       title: "Date",
       render: (_: any, object: any) => object?.Date || "-",
       width: "22%",

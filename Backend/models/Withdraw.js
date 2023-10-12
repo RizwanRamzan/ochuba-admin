@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const withdrawSchema = new mongoose.Schema({
+  Amount: {
+    type: String,
+    default: "",
+  },
   IBAN: {
     type: String,
     default: "",
