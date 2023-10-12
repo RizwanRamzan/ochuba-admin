@@ -42,6 +42,27 @@ exports.userSignup = async (req, res, next) => {
   }
 };
 
+exports.userUpdate = async (req, res, next) => {
+  try {
+    console.log(req.body, req.params.id)
+    const result = await User.findByIdAndUpdate(req.params.id, req.body);
+
+    if (!result) {
+      return next(new ErrorResponse("Update failed", 400));
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Successfully Update the user",
+      user: result
+    });
+
+  } catch (err) {
+    console.log(err);
+    return next(new ErrorResponse(err, 400));
+  }
+};
+
 exports.userLogin = async (req, res, next) => {
   try {
     const result = await User.findOne({ email: req.body.email });
