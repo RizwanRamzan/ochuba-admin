@@ -15,12 +15,6 @@ const Dashboard = () => {
   const token = useSelector((state: any) => state.authReducer.Admintoken);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [endModal, setEndModal] = useState<any>({});
-  const [editModal, setEditModal] = useState<any>({});
-  const [deletEvent, setDelete] = useState<any>({});
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [Open, setOpen] = useState(false);
-  const [user, setUser] = useState<any>({});
 
   const GetAllTrading = () => {
     setLoading(true);
@@ -41,6 +35,22 @@ const Dashboard = () => {
       });
   };
 
+  
+  const CompleteEvents = (id: any) => {
+    fetch(`${baseUrl}/api/v1/admin/trading/withdraw/complete/${id}`, {
+      method: "put",
+      headers: {
+        "Authorization": token
+      }
+    })
+      .then((res) => res.json())
+      .then((data: any) => {
+        setLoading(false);
+        message.success(data?.message);
+        GetAllTrading()
+      });
+  };
+
   useEffect(() => {
     GetAllTrading();
   }, [token]);
@@ -56,7 +66,7 @@ const Dashboard = () => {
       <DashboardTable
         mobileResponsive={mobileResponsive}
         data={data}
-        setUser={setUser}
+        CompleteEvents={CompleteEvents}
       />
 
     </>

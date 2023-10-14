@@ -1,8 +1,9 @@
 import { Table } from "antd";
 // General Style
 import "../../GeneralStyle/index.scss";
+import { Tag } from 'antd';
 
-const DashboardTable = ({ mobileResponsive, data}: any) => {
+const DashboardTable = ({ mobileResponsive, data, CompleteEvents}: any) => {
   console.log(data, "dataaaaaaaaaaaaaaaaaaaa");
 
   const columns = [
@@ -20,16 +21,31 @@ const DashboardTable = ({ mobileResponsive, data}: any) => {
     },
     {
       key: "3",
-      title: "Email",
-      render: (_: any, object: any) => object?.User.email || "-",
+      title: "Phone Number",
+      render: (_: any, object: any) => object?.User.phoneNumber || "-",
       width: "22%",
     },
     {
       key: "4",
+      title: "Status",
+      render: (_: any, object: any) => ( object?.Status == "pending" ? <Tag color="#f50">Pending</Tag> : <Tag color="#87d068">Completed</Tag>  || "-" ),
+      width: "10%",
+    },
+    {
+      key: "5",
       title: "Date",
       render: (_: any, object: any) => object?.Date || "-",
+      width: "36%",
+    },
+    {
+      key: "6",
+      title: "Action",
+      render: (_: any, object: any) => (
+          <button style={{marginTop: 0}} onClick={() => CompleteEvents(object?._id)}>Complete</button>
+      ),
       width: "22%",
-    }
+      align: "center",
+    },
   ];
 
   return (

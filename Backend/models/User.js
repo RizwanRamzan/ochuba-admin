@@ -7,17 +7,12 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    match: [
-      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
-      "Please add a valid email",
-    ],
-    lowercase: true,
-    trim: true,
+    default: ""
   },
   phoneNumber: {
     type: String,
     unique: [true, "This Phone Number already exists"],
-    required: [true, "Please add email"],
+    required: [true, "Please add Phone Number"],
   },
   admin: {
     type: Boolean,

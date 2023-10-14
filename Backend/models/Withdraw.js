@@ -9,12 +9,16 @@ const withdrawSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  Status: {
+    type: String,
+    default: "",
+  },
   User: {
     id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    email: String
+    phoneNumber: String
   },
   Date: {
     type: Date,
