@@ -83,14 +83,17 @@ exports.userUpdate = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    return next(new ErrorResponse(err, 400));
+    return res.status(400).json({
+      success: false,
+      message: err.message,
+      user: [],
+    });
   }
 };
 
 exports.userLogin = async (req, res, next) => {
   try {
-    req.body.password = "ochuba4444";
-    const result = await User.findOne({ phoneNumber: req.body.phoneNumber });
+    const result = await User.findOne({ email: req.body.email });
     if (!result) {
       // this means result is null
       return next(new ErrorResponse("Incorrect Phone Number", 200));

@@ -88,7 +88,7 @@ exports.findWithdraws = async (req, res, next) => {
       return res.status(200).json({
         success: true,
         message: "Got Data Successfully",
-        data: withdraws,
+        data: withdraws.reverse(),
       });
     }
     return res.status(200).json({

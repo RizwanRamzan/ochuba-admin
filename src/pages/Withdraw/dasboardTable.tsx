@@ -2,6 +2,7 @@ import { Table } from "antd";
 // General Style
 import "../../GeneralStyle/index.scss";
 import { Tag } from 'antd';
+import moment from "moment";
 
 const DashboardTable = ({ mobileResponsive, data, CompleteEvents}: any) => {
   console.log(data, "dataaaaaaaaaaaaaaaaaaaa");
@@ -34,7 +35,7 @@ const DashboardTable = ({ mobileResponsive, data, CompleteEvents}: any) => {
     {
       key: "5",
       title: "Date",
-      render: (_: any, object: any) => object?.Date || "-",
+      render: (_: any, object: any) => moment(object?.Date).format("DD/MM/YYYY hh:mm A") || "-",
       width: "36%",
     },
     {
@@ -44,7 +45,6 @@ const DashboardTable = ({ mobileResponsive, data, CompleteEvents}: any) => {
           <button style={{marginTop: 0}} onClick={() => CompleteEvents(object?._id)}>Complete</button>
       ),
       width: "22%",
-      align: "center",
     },
   ];
 
